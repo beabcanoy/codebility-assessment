@@ -62,7 +62,15 @@ export const updateTodo = (req, res) => {
     todo.title = title.trim();
   }
   if (completed !== undefined) {
-    todo.completed = completed === true || completed === "true";
+    if (typeof completed === "boolean") {
+      todo.completed = completed;
+    } else if (completed === "true" || completed === "false") {
+      todo.completed = completed === "true";
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Invalid value for completed; must be a boolean or 'true'/'false' string" });
+    }
   }
   res.json({
     message: `Todo with ID: ${req.params.id} updated successfully!`,
