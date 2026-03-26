@@ -59,6 +59,9 @@ export const updateTodo = (req, res) => {
   }
   const { title, completed } = req.body;
   if (title !== undefined) {
+    if (typeof title !== "string" || !title.trim()) {
+      return res.status(400).json({ message: "Title is required" });
+    }
     todo.title = title.trim();
   }
   if (completed !== undefined) {
